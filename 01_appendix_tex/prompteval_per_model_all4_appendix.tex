@@ -1,0 +1,502 @@
+% =================================================================
+% All 4 PromptEval-vs-SIREN per-model comparison tables.
+% Format: per-budget rows = theta_A*, True dir.,
+%   PE@0.05, 0.10, 0.20, 0.40, 0.60, 0.80, 1.00 (M1), SIREN.
+% Convention: ties (estimate == theta_B*) count as wrong direction.
+% =================================================================
+
+% --- Math, Random Search ---
+\begin{table*}[!htbp]
+\centering
+\caption{
+Unified PromptEval~\cite{polo2024efficient} vs SIREN comparison across budgets on MMLU-Pro Math with the \textbf{random search} tuner.
+The untuned-pipeline-default reference $\theta_B^\star$ is fixed across budgets and shown once at the top.
+For each budget, $\theta_A^\star$ is the Monte-Carlo tuned target, and all method rows report estimates
+$\hat\theta_A$ of this tuned target only. The \cmark/\xmark marker indicates whether
+$\mathrm{sign}(\hat\theta_A-\theta_B^\star)$ agrees with the true direction
+$\mathrm{sign}(\theta_A^\star-\theta_B^\star)$.
+}
+\label{tab:prompteval_math_rs_all_budgets}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{0.92}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llccccccccccc}
+\toprule
+$B$ & Row
+& Qwen3 & Phi-3.5 & Qwen2.5-7B & Llama3.1 & Yi-1.5
+& InternLM & Qwen2-7B & Qwen2.5-3B & GLM-4 & Mistr-v0.3 & Mistr-v0.1 \\
+\midrule
+
+Ref. & $\theta_B^\star$
+& 0.329 & 0.192 & 0.325 & 0.244 & 0.225 & 0.245 & 0.284 & 0.262 & 0.232 & 0.163 & 0.153 \\
+
+\midrule
+\multirow{10}{*}{$500K$}
+& $\theta_A^\star$
+& 0.294 & 0.175 & 0.213 & 0.145 & 0.147 & 0.201 & 0.243 & 0.240 & 0.189 & 0.124 & 0.130 \\
+& True dir.
+& A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B \\
+& PE $f{=}0.05$
+& 0.260\,\cmark & 0.147\,\cmark & 0.283\,\cmark & 0.140\,\cmark & 0.120\,\cmark & 0.173\,\cmark & 0.194\,\cmark & 0.201\,\cmark & 0.176\,\cmark & 0.097\,\cmark & 0.125\,\cmark \\
+& PE $f{=}0.10$
+& 0.309\,\cmark & 0.191\,\cmark & 0.261\,\cmark & 0.160\,\cmark & 0.170\,\cmark & 0.219\,\cmark & 0.252\,\cmark & 0.264\,\xmark & 0.212\,\cmark & 0.119\,\cmark & 0.149\,\cmark \\
+& PE $f{=}0.20$
+& 0.348\,\xmark & 0.241\,\xmark & 0.357\,\xmark & 0.219\,\cmark & 0.221\,\cmark & 0.269\,\xmark & 0.286\,\xmark & 0.298\,\xmark & 0.240\,\xmark & 0.149\,\cmark & 0.170\,\xmark \\
+& PE $f{=}0.40$
+& 0.360\,\xmark & 0.228\,\xmark & 0.349\,\xmark & 0.218\,\cmark & 0.211\,\cmark & 0.261\,\xmark & 0.283\,\cmark & 0.267\,\xmark & 0.242\,\xmark & 0.154\,\cmark & 0.157\,\xmark \\
+& PE $f{=}0.60$
+& 0.370\,\xmark & 0.233\,\xmark & 0.332\,\xmark & 0.215\,\cmark & 0.199\,\cmark & 0.258\,\xmark & 0.293\,\xmark & 0.258\,\cmark & 0.234\,\xmark & 0.155\,\cmark & 0.152\,\cmark \\
+& PE $f{=}0.80$
+& 0.372\,\xmark & 0.232\,\xmark & 0.327\,\xmark & 0.205\,\cmark & 0.198\,\cmark & 0.260\,\xmark & 0.299\,\xmark & 0.253\,\cmark & 0.233\,\xmark & 0.155\,\cmark & 0.149\,\cmark \\
+& PE $f{=}1.00$ (M1)
+& 0.371\,\xmark & 0.234\,\xmark & 0.324\,\cmark & 0.203\,\cmark & 0.197\,\cmark & 0.259\,\xmark & 0.292\,\xmark & 0.254\,\cmark & 0.233\,\xmark & 0.158\,\cmark & 0.145\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.291}\,\cmark & \textbf{0.174}\,\cmark & \textbf{0.213}\,\cmark & \textbf{0.144}\,\cmark & \textbf{0.147}\,\cmark & \textbf{0.202}\,\cmark & \textbf{0.241}\,\cmark & \textbf{0.238}\,\cmark & \textbf{0.187}\,\cmark & \textbf{0.125}\,\cmark & \textbf{0.129}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$1.5M$}
+& $\theta_A^\star$
+& 0.346 & 0.198 & 0.311 & 0.211 & 0.162 & 0.244 & 0.264 & 0.247 & 0.221 & 0.154 & 0.136 \\
+& True dir.
+& A{>}B & A{>}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B \\
+& PE $f{=}0.05$
+& 0.296\,\xmark & 0.180\,\xmark & 0.274\,\cmark & 0.163\,\cmark & 0.147\,\cmark & 0.200\,\cmark & 0.204\,\cmark & 0.206\,\cmark & 0.199\,\cmark & 0.122\,\cmark & 0.099\,\cmark \\
+& PE $f{=}0.10$
+& 0.349\,\cmark & 0.216\,\cmark & 0.318\,\cmark & 0.227\,\cmark & 0.184\,\cmark & 0.256\,\xmark & 0.276\,\cmark & 0.264\,\xmark & 0.237\,\xmark & 0.166\,\xmark & 0.149\,\cmark \\
+& PE $f{=}0.20$
+& 0.396\,\cmark & 0.241\,\cmark & 0.352\,\xmark & 0.238\,\cmark & 0.240\,\xmark & 0.283\,\xmark & 0.290\,\xmark & 0.292\,\xmark & 0.259\,\xmark & 0.199\,\xmark & 0.158\,\xmark \\
+& PE $f{=}0.40$
+& 0.383\,\cmark & 0.228\,\cmark & 0.328\,\xmark & 0.233\,\cmark & 0.209\,\cmark & 0.286\,\xmark & 0.307\,\xmark & 0.285\,\xmark & 0.244\,\xmark & 0.189\,\xmark & 0.151\,\cmark \\
+& PE $f{=}0.60$
+& 0.374\,\cmark & 0.229\,\cmark & 0.325\,\xmark & 0.232\,\cmark & 0.204\,\cmark & 0.270\,\xmark & 0.302\,\xmark & 0.274\,\xmark & 0.236\,\xmark & 0.189\,\xmark & 0.148\,\cmark \\
+& PE $f{=}0.80$
+& 0.373\,\cmark & 0.224\,\cmark & 0.330\,\xmark & 0.234\,\cmark & 0.198\,\cmark & 0.260\,\xmark & 0.292\,\xmark & 0.271\,\xmark & 0.237\,\xmark & 0.184\,\xmark & 0.146\,\cmark \\
+& PE $f{=}1.00$ (M1)
+& 0.373\,\cmark & 0.230\,\cmark & 0.331\,\xmark & 0.233\,\cmark & 0.197\,\cmark & 0.264\,\xmark & 0.292\,\xmark & 0.272\,\xmark & 0.237\,\xmark & 0.189\,\xmark & 0.149\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.352}\,\cmark & \textbf{0.199}\,\cmark & \textbf{0.312}\,\cmark & \textbf{0.213}\,\cmark & \textbf{0.163}\,\cmark & \textbf{0.245}\,\xmark & \textbf{0.265}\,\cmark & \textbf{0.246}\,\cmark & \textbf{0.218}\,\cmark & \textbf{0.155}\,\cmark & \textbf{0.135}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$3M$}
+& $\theta_A^\star$
+& 0.345 & 0.196 & 0.313 & 0.212 & 0.164 & 0.244 & 0.263 & 0.239 & 0.218 & 0.155 & 0.137 \\
+& True dir.
+& A{>}B & A{>}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B \\
+& PE $f{=}0.05$
+& 0.366\,\cmark & 0.144\,\xmark & 0.275\,\cmark & 0.159\,\cmark & 0.104\,\cmark & 0.213\,\cmark & 0.208\,\cmark & 0.202\,\cmark & 0.187\,\cmark & 0.117\,\cmark & 0.116\,\cmark \\
+& PE $f{=}0.10$
+& 0.369\,\cmark & 0.206\,\cmark & 0.323\,\cmark & 0.218\,\cmark & 0.172\,\cmark & 0.275\,\xmark & 0.282\,\cmark & 0.263\,\xmark & 0.236\,\xmark & 0.169\,\xmark & 0.150\,\cmark \\
+& PE $f{=}0.20$
+& 0.382\,\cmark & 0.250\,\cmark & 0.340\,\xmark & 0.251\,\xmark & 0.212\,\cmark & 0.280\,\xmark & 0.302\,\xmark & 0.282\,\xmark & 0.246\,\xmark & 0.194\,\xmark & 0.179\,\xmark \\
+& PE $f{=}0.40$
+& 0.397\,\cmark & 0.247\,\cmark & 0.326\,\xmark & 0.230\,\cmark & 0.204\,\cmark & 0.288\,\xmark & 0.292\,\xmark & 0.277\,\xmark & 0.253\,\xmark & 0.188\,\xmark & 0.175\,\xmark \\
+& PE $f{=}0.60$
+& 0.391\,\cmark & 0.243\,\cmark & 0.330\,\xmark & 0.231\,\cmark & 0.214\,\cmark & 0.265\,\xmark & 0.296\,\xmark & 0.264\,\xmark & 0.249\,\xmark & 0.176\,\xmark & 0.162\,\xmark \\
+& PE $f{=}0.80$
+& 0.375\,\cmark & 0.234\,\cmark & 0.330\,\xmark & 0.226\,\cmark & 0.204\,\cmark & 0.268\,\xmark & 0.291\,\xmark & 0.263\,\xmark & 0.242\,\xmark & 0.174\,\xmark & 0.164\,\xmark \\
+& PE $f{=}1.00$ (M1)
+& 0.373\,\cmark & 0.237\,\cmark & 0.329\,\xmark & 0.226\,\cmark & 0.201\,\cmark & 0.264\,\xmark & 0.289\,\xmark & 0.267\,\xmark & 0.241\,\xmark & 0.171\,\xmark & 0.162\,\xmark \\
+& \textbf{SIREN}
+& \textbf{0.347}\,\cmark & \textbf{0.196}\,\cmark & \textbf{0.313}\,\cmark & \textbf{0.215}\,\cmark & \textbf{0.165}\,\cmark & \textbf{0.246}\,\xmark & \textbf{0.265}\,\cmark & \textbf{0.238}\,\cmark & \textbf{0.216}\,\cmark & \textbf{0.156}\,\cmark & \textbf{0.136}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$6.5M$}
+& $\theta_A^\star$
+& 0.353 & 0.200 & 0.319 & 0.213 & 0.187 & 0.239 & 0.257 & 0.248 & 0.227 & 0.153 & 0.146 \\
+& True dir.
+& A{>}B & A{>}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B \\
+& PE $f{=}0.05$
+& 0.287\,\xmark & 0.179\,\xmark & 0.274\,\cmark & 0.172\,\cmark & 0.138\,\cmark & 0.199\,\cmark & 0.200\,\cmark & 0.193\,\cmark & 0.200\,\cmark & 0.119\,\cmark & 0.117\,\cmark \\
+& PE $f{=}0.10$
+& 0.365\,\cmark & 0.221\,\cmark & 0.325\,\xmark & 0.225\,\cmark & 0.206\,\cmark & 0.262\,\xmark & 0.277\,\cmark & 0.252\,\cmark & 0.244\,\xmark & 0.165\,\xmark & 0.166\,\xmark \\
+& PE $f{=}0.20$
+& 0.400\,\cmark & 0.245\,\cmark & 0.329\,\xmark & 0.235\,\cmark & 0.250\,\xmark & 0.277\,\xmark & 0.295\,\xmark & 0.277\,\xmark & 0.249\,\xmark & 0.183\,\xmark & 0.168\,\xmark \\
+& PE $f{=}0.40$
+& 0.377\,\cmark & 0.251\,\cmark & 0.321\,\cmark & 0.236\,\cmark & 0.230\,\xmark & 0.283\,\xmark & 0.288\,\xmark & 0.276\,\xmark & 0.245\,\xmark & 0.177\,\xmark & 0.169\,\xmark \\
+& PE $f{=}0.60$
+& 0.372\,\cmark & 0.246\,\cmark & 0.327\,\xmark & 0.231\,\cmark & 0.237\,\xmark & 0.266\,\xmark & 0.276\,\cmark & 0.264\,\xmark & 0.243\,\xmark & 0.171\,\xmark & 0.164\,\xmark \\
+& PE $f{=}0.80$
+& 0.373\,\cmark & 0.239\,\cmark & 0.328\,\xmark & 0.236\,\cmark & 0.228\,\xmark & 0.273\,\xmark & 0.283\,\cmark & 0.270\,\xmark & 0.243\,\xmark & 0.174\,\xmark & 0.160\,\xmark \\
+& PE $f{=}1.00$ (M1)
+& 0.373\,\cmark & 0.237\,\cmark & 0.322\,\cmark & 0.233\,\cmark & 0.219\,\cmark & 0.264\,\xmark & 0.280\,\cmark & 0.269\,\xmark & 0.241\,\xmark & 0.171\,\xmark & 0.163\,\xmark \\
+& \textbf{SIREN}
+& \textbf{0.356}\,\cmark & \textbf{0.201}\,\cmark & \textbf{0.320}\,\cmark & \textbf{0.214}\,\cmark & \textbf{0.189}\,\cmark & \textbf{0.243}\,\cmark & \textbf{0.255}\,\cmark & \textbf{0.246}\,\cmark & \textbf{0.225}\,\cmark & \textbf{0.153}\,\cmark & \textbf{0.146}\,\cmark \\
+
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\FloatBarrier
+
+% --- Math, DSPy ---
+\begin{table*}[!htbp]
+\centering
+\caption{
+Unified PromptEval~\cite{polo2024efficient} vs SIREN comparison across budgets on MMLU-Pro Math with the \textbf{DSPy} tuner.
+The untuned-pipeline-default reference $\theta_B^\star$ is fixed across budgets and shown once at the top.
+For each budget, $\theta_A^\star$ is the Monte-Carlo tuned target, and all method rows report estimates
+$\hat\theta_A$ of this tuned target only. The \cmark/\xmark marker indicates whether
+$\mathrm{sign}(\hat\theta_A-\theta_B^\star)$ agrees with the true direction
+$\mathrm{sign}(\theta_A^\star-\theta_B^\star)$.
+}
+\label{tab:prompteval_math_dspy_all_budgets}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{0.92}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llccccccccccc}
+\toprule
+$B$ & Row
+& Qwen3 & Phi-3.5 & Qwen2.5-7B & Llama3.1 & Yi-1.5
+& InternLM & Qwen2-7B & Qwen2.5-3B & GLM-4 & Mistr-v0.3 & Mistr-v0.1 \\
+\midrule
+
+Ref. & $\theta_B^\star$
+& 0.373 & 0.263 & 0.306 & 0.222 & 0.196 & 0.249 & 0.257 & 0.249 & 0.255 & 0.169 & 0.130 \\
+
+\midrule
+\multirow{10}{*}{$500K$}
+& $\theta_A^\star$
+& 0.379 & 0.267 & 0.339 & 0.230 & 0.161 & 0.253 & 0.258 & 0.283 & 0.254 & 0.165 & 0.140 \\
+& True dir.
+& A{>}B & A{>}B & A{>}B & A{>}B & A{<}B & A{>}B & A{>}B & A{>}B & A{<}B & A{<}B & A{>}B \\
+& PE $f{=}0.05$
+& 0.254\,\xmark & 0.193\,\xmark & 0.267\,\xmark & 0.136\,\xmark & 0.109\,\cmark & 0.180\,\xmark & 0.157\,\xmark & 0.181\,\xmark & 0.164\,\cmark & 0.092\,\cmark & 0.076\,\xmark \\
+& PE $f{=}0.10$
+& 0.305\,\xmark & 0.204\,\xmark & 0.267\,\xmark & 0.180\,\xmark & 0.115\,\cmark & 0.199\,\xmark & 0.194\,\xmark & 0.227\,\xmark & 0.226\,\cmark & 0.125\,\cmark & 0.117\,\xmark \\
+& PE $f{=}0.20$
+& 0.401\,\cmark & 0.267\,\cmark & 0.349\,\cmark & 0.245\,\cmark & 0.164\,\cmark & 0.265\,\cmark & 0.274\,\cmark & 0.305\,\cmark & 0.286\,\xmark & 0.175\,\xmark & 0.162\,\cmark \\
+& PE $f{=}0.40$
+& 0.399\,\cmark & 0.281\,\cmark & 0.346\,\cmark & 0.252\,\cmark & 0.164\,\cmark & 0.266\,\cmark & 0.270\,\cmark & 0.322\,\cmark & 0.268\,\xmark & 0.183\,\xmark & 0.149\,\cmark \\
+& PE $f{=}0.60$
+& 0.399\,\cmark & 0.285\,\cmark & 0.346\,\cmark & 0.240\,\cmark & 0.182\,\cmark & 0.265\,\cmark & 0.269\,\cmark & 0.327\,\cmark & 0.267\,\xmark & 0.174\,\xmark & 0.153\,\cmark \\
+& PE $f{=}0.80$
+& 0.391\,\cmark & 0.286\,\cmark & 0.352\,\cmark & 0.237\,\cmark & 0.192\,\cmark & 0.263\,\cmark & 0.268\,\cmark & 0.326\,\cmark & 0.265\,\xmark & 0.171\,\xmark & 0.149\,\cmark \\
+& PE $f{=}1.00$ (M1)
+& 0.388\,\cmark & 0.285\,\cmark & 0.349\,\cmark & 0.240\,\cmark & 0.196\,\cmark & 0.265\,\cmark & 0.265\,\cmark & 0.322\,\cmark & 0.257\,\xmark & 0.168\,\cmark & 0.146\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.380}\,\cmark & \textbf{0.264}\,\cmark & \textbf{0.342}\,\cmark & \textbf{0.230}\,\cmark & \textbf{0.162}\,\cmark & \textbf{0.254}\,\cmark & \textbf{0.256}\,\xmark & \textbf{0.278}\,\cmark & \textbf{0.249}\,\cmark & \textbf{0.164}\,\cmark & \textbf{0.139}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$1.5M$}
+& $\theta_A^\star$
+& 0.383 & 0.278 & 0.344 & 0.251 & 0.193 & 0.254 & 0.262 & 0.290 & 0.255 & 0.166 & 0.142 \\
+& True dir.
+& A{>}B & A{>}B & A{>}B & A{>}B & A{<}B & A{>}B & A{>}B & A{>}B & A{<}B & A{<}B & A{>}B \\
+& PE $f{=}0.05$
+& 0.271\,\xmark & 0.175\,\xmark & 0.212\,\xmark & 0.174\,\xmark & 0.123\,\cmark & 0.173\,\xmark & 0.168\,\xmark & 0.227\,\xmark & 0.151\,\cmark & 0.102\,\cmark & 0.079\,\xmark \\
+& PE $f{=}0.10$
+& 0.304\,\xmark & 0.226\,\xmark & 0.265\,\xmark & 0.218\,\xmark & 0.172\,\cmark & 0.205\,\xmark & 0.207\,\xmark & 0.250\,\cmark & 0.209\,\cmark & 0.133\,\cmark & 0.112\,\xmark \\
+& PE $f{=}0.20$
+& 0.393\,\cmark & 0.299\,\cmark & 0.353\,\cmark & 0.273\,\cmark & 0.224\,\xmark & 0.268\,\cmark & 0.279\,\cmark & 0.321\,\cmark & 0.264\,\xmark & 0.181\,\xmark & 0.151\,\cmark \\
+& PE $f{=}0.40$
+& 0.403\,\cmark & 0.302\,\cmark & 0.345\,\cmark & 0.291\,\cmark & 0.229\,\xmark & 0.269\,\cmark & 0.276\,\cmark & 0.318\,\cmark & 0.264\,\xmark & 0.180\,\xmark & 0.151\,\cmark \\
+& PE $f{=}0.60$
+& 0.403\,\cmark & 0.307\,\cmark & 0.346\,\cmark & 0.278\,\cmark & 0.218\,\xmark & 0.265\,\cmark & 0.273\,\cmark & 0.320\,\cmark & 0.259\,\xmark & 0.171\,\xmark & 0.154\,\cmark \\
+& PE $f{=}0.80$
+& 0.403\,\cmark & 0.308\,\cmark & 0.349\,\cmark & 0.283\,\cmark & 0.210\,\xmark & 0.262\,\cmark & 0.267\,\cmark & 0.324\,\cmark & 0.257\,\xmark & 0.170\,\xmark & 0.153\,\cmark \\
+& PE $f{=}1.00$ (M1)
+& 0.398\,\cmark & 0.305\,\cmark & 0.350\,\cmark & 0.282\,\cmark & 0.214\,\xmark & 0.262\,\cmark & 0.267\,\cmark & 0.325\,\cmark & 0.257\,\xmark & 0.174\,\xmark & 0.149\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.387}\,\cmark & \textbf{0.275}\,\cmark & \textbf{0.348}\,\cmark & \textbf{0.250}\,\cmark & \textbf{0.193}\,\cmark & \textbf{0.257}\,\cmark & \textbf{0.260}\,\cmark & \textbf{0.284}\,\cmark & \textbf{0.253}\,\cmark & \textbf{0.165}\,\cmark & \textbf{0.143}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$3M$}
+& $\theta_A^\star$
+& 0.384 & 0.279 & 0.342 & 0.251 & 0.193 & 0.250 & 0.264 & 0.294 & 0.254 & 0.164 & 0.142 \\
+& True dir.
+& A{>}B & A{>}B & A{>}B & A{>}B & A{<}B & A{>}B & A{>}B & A{>}B & A{<}B & A{<}B & A{>}B \\
+& PE $f{=}0.05$
+& 0.298\,\xmark & 0.181\,\xmark & 0.221\,\xmark & 0.182\,\xmark & 0.129\,\cmark & 0.190\,\xmark & 0.167\,\xmark & 0.229\,\xmark & 0.151\,\cmark & 0.107\,\cmark & 0.067\,\xmark \\
+& PE $f{=}0.10$
+& 0.326\,\xmark & 0.215\,\xmark & 0.272\,\xmark & 0.230\,\cmark & 0.153\,\cmark & 0.193\,\xmark & 0.197\,\xmark & 0.261\,\cmark & 0.213\,\cmark & 0.139\,\cmark & 0.113\,\xmark \\
+& PE $f{=}0.20$
+& 0.412\,\cmark & 0.281\,\cmark & 0.365\,\cmark & 0.273\,\cmark & 0.228\,\xmark & 0.263\,\cmark & 0.274\,\cmark & 0.335\,\cmark & 0.272\,\xmark & 0.177\,\xmark & 0.151\,\cmark \\
+& PE $f{=}0.40$
+& 0.397\,\cmark & 0.310\,\cmark & 0.353\,\cmark & 0.280\,\cmark & 0.217\,\xmark & 0.268\,\cmark & 0.273\,\cmark & 0.322\,\cmark & 0.279\,\xmark & 0.171\,\xmark & 0.154\,\cmark \\
+& PE $f{=}0.60$
+& 0.410\,\cmark & 0.306\,\cmark & 0.348\,\cmark & 0.284\,\cmark & 0.203\,\xmark & 0.262\,\cmark & 0.273\,\cmark & 0.316\,\cmark & 0.260\,\xmark & 0.172\,\xmark & 0.149\,\cmark \\
+& PE $f{=}0.80$
+& 0.402\,\cmark & 0.309\,\cmark & 0.346\,\cmark & 0.290\,\cmark & 0.212\,\xmark & 0.261\,\cmark & 0.272\,\cmark & 0.325\,\cmark & 0.257\,\xmark & 0.176\,\xmark & 0.153\,\cmark \\
+& PE $f{=}1.00$ (M1)
+& 0.398\,\cmark & 0.305\,\cmark & 0.349\,\cmark & 0.285\,\cmark & 0.211\,\xmark & 0.263\,\cmark & 0.269\,\cmark & 0.321\,\cmark & 0.257\,\xmark & 0.176\,\xmark & 0.149\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.389}\,\cmark & \textbf{0.275}\,\cmark & \textbf{0.347}\,\cmark & \textbf{0.249}\,\cmark & \textbf{0.194}\,\cmark & \textbf{0.252}\,\cmark & \textbf{0.263}\,\cmark & \textbf{0.287}\,\cmark & \textbf{0.252}\,\cmark & \textbf{0.163}\,\cmark & \textbf{0.143}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$6.5M$}
+& $\theta_A^\star$
+& 0.384 & 0.274 & 0.343 & 0.252 & 0.193 & 0.252 & 0.263 & 0.302 & 0.255 & 0.169 & 0.143 \\
+& True dir.
+& A{>}B & A{>}B & A{>}B & A{>}B & A{<}B & A{>}B & A{>}B & A{>}B & A{<}B & A{<}B & A{>}B \\
+& PE $f{=}0.05$
+& 0.302\,\xmark & 0.169\,\xmark & 0.215\,\xmark & 0.179\,\xmark & 0.115\,\cmark & 0.163\,\xmark & 0.192\,\xmark & 0.231\,\xmark & 0.153\,\cmark & 0.110\,\cmark & 0.087\,\xmark \\
+& PE $f{=}0.10$
+& 0.309\,\xmark & 0.216\,\xmark & 0.269\,\xmark & 0.227\,\cmark & 0.151\,\cmark & 0.196\,\xmark & 0.207\,\xmark & 0.260\,\cmark & 0.204\,\cmark & 0.140\,\cmark & 0.126\,\xmark \\
+& PE $f{=}0.20$
+& 0.397\,\cmark & 0.283\,\cmark & 0.353\,\cmark & 0.276\,\cmark & 0.224\,\xmark & 0.274\,\cmark & 0.269\,\cmark & 0.330\,\cmark & 0.264\,\xmark & 0.184\,\xmark & 0.164\,\cmark \\
+& PE $f{=}0.40$
+& 0.411\,\cmark & 0.296\,\cmark & 0.347\,\cmark & 0.295\,\cmark & 0.210\,\xmark & 0.269\,\cmark & 0.272\,\cmark & 0.338\,\cmark & 0.268\,\xmark & 0.187\,\xmark & 0.150\,\cmark \\
+& PE $f{=}0.60$
+& 0.403\,\cmark & 0.294\,\cmark & 0.345\,\cmark & 0.287\,\cmark & 0.211\,\xmark & 0.264\,\cmark & 0.273\,\cmark & 0.328\,\cmark & 0.260\,\xmark & 0.184\,\xmark & 0.148\,\cmark \\
+& PE $f{=}0.80$
+& 0.401\,\cmark & 0.291\,\cmark & 0.347\,\cmark & 0.290\,\cmark & 0.212\,\xmark & 0.262\,\cmark & 0.270\,\cmark & 0.332\,\cmark & 0.258\,\xmark & 0.180\,\xmark & 0.150\,\cmark \\
+& PE $f{=}1.00$ (M1)
+& 0.398\,\cmark & 0.293\,\cmark & 0.349\,\cmark & 0.284\,\cmark & 0.208\,\xmark & 0.263\,\cmark & 0.269\,\cmark & 0.330\,\cmark & 0.257\,\xmark & 0.176\,\xmark & 0.149\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.389}\,\cmark & \textbf{0.270}\,\cmark & \textbf{0.347}\,\cmark & \textbf{0.251}\,\cmark & \textbf{0.194}\,\cmark & \textbf{0.254}\,\cmark & \textbf{0.261}\,\cmark & \textbf{0.296}\,\cmark & \textbf{0.253}\,\cmark & \textbf{0.168}\,\cmark & \textbf{0.143}\,\cmark \\
+
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\FloatBarrier
+
+% --- Law, Random Search ---
+\begin{table*}[!htbp]
+\centering
+\caption{
+Unified PromptEval~\cite{polo2024efficient} vs SIREN comparison across budgets on MMLU-Pro Law with the \textbf{random search} tuner.
+The untuned-pipeline-default reference $\theta_B^\star$ is fixed across budgets and shown once at the top.
+For each budget, $\theta_A^\star$ is the Monte-Carlo tuned target, and all method rows report estimates
+$\hat\theta_A$ of this tuned target only. The \cmark/\xmark marker indicates whether
+$\mathrm{sign}(\hat\theta_A-\theta_B^\star)$ agrees with the true direction
+$\mathrm{sign}(\theta_A^\star-\theta_B^\star)$.
+}
+\label{tab:prompteval_law_rs_all_budgets}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{0.92}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llccccccccccc}
+\toprule
+$B$ & Row
+& Qwen3 & Phi-3.5 & Qwen2.5-7B & Llama3.1 & Yi-1.5
+& InternLM & Qwen2-7B & Qwen2.5-3B & GLM-4 & Mistr-v0.3 & Mistr-v0.1 \\
+\midrule
+
+Ref. & $\theta_B^\star$
+& 0.359 & 0.318 & 0.345 & 0.315 & 0.227 & 0.269 & 0.311 & 0.234 & 0.282 & 0.225 & 0.185 \\
+
+\midrule
+\multirow{10}{*}{$500K$}
+& $\theta_A^\star$
+& 0.317 & 0.293 & 0.324 & 0.294 & 0.222 & 0.261 & 0.300 & 0.224 & 0.272 & 0.230 & 0.172 \\
+& True dir.
+& A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{>}B & A{<}B \\
+& PE $f{=}0.05$
+& 0.248\,\cmark & 0.162\,\cmark & 0.157\,\cmark & 0.141\,\cmark & 0.119\,\cmark & 0.172\,\cmark & 0.137\,\cmark & 0.087\,\cmark & 0.163\,\cmark & 0.121\,\xmark & 0.128\,\cmark \\
+& PE $f{=}0.10$
+& 0.254\,\cmark & 0.169\,\cmark & 0.190\,\cmark & 0.192\,\cmark & 0.146\,\cmark & 0.209\,\cmark & 0.178\,\cmark & 0.112\,\cmark & 0.225\,\cmark & 0.122\,\xmark & 0.123\,\cmark \\
+& PE $f{=}0.20$
+& 0.311\,\cmark & 0.227\,\cmark & 0.244\,\cmark & 0.234\,\cmark & 0.177\,\cmark & 0.283\,\xmark & 0.204\,\cmark & 0.164\,\cmark & 0.280\,\cmark & 0.158\,\xmark & 0.154\,\cmark \\
+& PE $f{=}0.40$
+& 0.362\,\xmark & 0.299\,\cmark & 0.339\,\cmark & 0.318\,\xmark & 0.243\,\xmark & 0.275\,\xmark & 0.302\,\cmark & 0.235\,\xmark & 0.291\,\xmark & 0.235\,\cmark & 0.196\,\xmark \\
+& PE $f{=}0.60$
+& 0.360\,\xmark & 0.301\,\cmark & 0.335\,\cmark & 0.323\,\xmark & 0.229\,\xmark & 0.285\,\xmark & 0.301\,\cmark & 0.230\,\cmark & 0.282\,\xmark & 0.237\,\cmark & 0.197\,\xmark \\
+& PE $f{=}0.80$
+& 0.357\,\cmark & 0.311\,\cmark & 0.335\,\cmark & 0.321\,\xmark & 0.228\,\xmark & 0.284\,\xmark & 0.313\,\xmark & 0.236\,\xmark & 0.278\,\cmark & 0.236\,\cmark & 0.192\,\xmark \\
+& PE $f{=}1.00$ (M1)
+& 0.364\,\xmark & 0.312\,\cmark & 0.330\,\cmark & 0.314\,\cmark & 0.227\,\cmark & 0.275\,\xmark & 0.315\,\xmark & 0.237\,\xmark & 0.285\,\xmark & 0.234\,\cmark & 0.185\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.317}\,\cmark & \textbf{0.300}\,\cmark & \textbf{0.328}\,\cmark & \textbf{0.291}\,\cmark & \textbf{0.223}\,\cmark & \textbf{0.262}\,\cmark & \textbf{0.298}\,\cmark & \textbf{0.220}\,\cmark & \textbf{0.267}\,\cmark & \textbf{0.234}\,\cmark & \textbf{0.176}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$1.5M$}
+& $\theta_A^\star$
+& 0.308 & 0.298 & 0.324 & 0.283 & 0.223 & 0.265 & 0.304 & 0.235 & 0.274 & 0.217 & 0.165 \\
+& True dir.
+& A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{>}B & A{<}B & A{<}B & A{<}B \\
+& PE $f{=}0.05$
+& 0.236\,\cmark & 0.257\,\cmark & 0.243\,\cmark & 0.303\,\cmark & 0.187\,\cmark & 0.225\,\cmark & 0.265\,\cmark & 0.206\,\xmark & 0.265\,\cmark & 0.191\,\cmark & 0.128\,\cmark \\
+& PE $f{=}0.10$
+& 0.325\,\cmark & 0.300\,\cmark & 0.320\,\cmark & 0.305\,\cmark & 0.225\,\cmark & 0.277\,\xmark & 0.334\,\xmark & 0.256\,\cmark & 0.299\,\xmark & 0.241\,\xmark & 0.174\,\cmark \\
+& PE $f{=}0.20$
+& 0.345\,\cmark & 0.322\,\xmark & 0.352\,\xmark & 0.345\,\xmark & 0.246\,\xmark & 0.287\,\xmark & 0.354\,\xmark & 0.274\,\cmark & 0.305\,\xmark & 0.270\,\xmark & 0.207\,\xmark \\
+& PE $f{=}0.40$
+& 0.353\,\cmark & 0.318\,\cmark & 0.351\,\xmark & 0.345\,\xmark & 0.247\,\xmark & 0.279\,\xmark & 0.338\,\xmark & 0.253\,\cmark & 0.293\,\xmark & 0.253\,\xmark & 0.197\,\xmark \\
+& PE $f{=}0.60$
+& 0.365\,\xmark & 0.317\,\cmark & 0.341\,\cmark & 0.330\,\xmark & 0.238\,\xmark & 0.278\,\xmark & 0.325\,\xmark & 0.248\,\cmark & 0.289\,\xmark & 0.248\,\xmark & 0.191\,\xmark \\
+& PE $f{=}0.80$
+& 0.362\,\xmark & 0.322\,\xmark & 0.340\,\cmark & 0.323\,\xmark & 0.252\,\xmark & 0.279\,\xmark & 0.321\,\xmark & 0.243\,\cmark & 0.284\,\xmark & 0.243\,\xmark & 0.190\,\xmark \\
+& PE $f{=}1.00$ (M1)
+& 0.364\,\xmark & 0.318\,\cmark & 0.338\,\cmark & 0.325\,\xmark & 0.251\,\xmark & 0.275\,\xmark & 0.320\,\xmark & 0.244\,\cmark & 0.285\,\xmark & 0.240\,\xmark & 0.185\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.309}\,\cmark & \textbf{0.305}\,\cmark & \textbf{0.326}\,\cmark & \textbf{0.283}\,\cmark & \textbf{0.226}\,\cmark & \textbf{0.265}\,\cmark & \textbf{0.303}\,\cmark & \textbf{0.232}\,\xmark & \textbf{0.270}\,\cmark & \textbf{0.220}\,\cmark & \textbf{0.168}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$3M$}
+& $\theta_A^\star$
+& 0.324 & 0.294 & 0.325 & 0.281 & 0.224 & 0.265 & 0.308 & 0.241 & 0.273 & 0.230 & 0.173 \\
+& True dir.
+& A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{<}B & A{>}B & A{<}B & A{>}B & A{<}B \\
+& PE $f{=}0.05$
+& 0.314\,\cmark & 0.284\,\cmark & 0.344\,\cmark & 0.296\,\cmark & 0.218\,\cmark & 0.247\,\cmark & 0.277\,\cmark & 0.274\,\cmark & 0.254\,\cmark & 0.204\,\xmark & 0.145\,\cmark \\
+& PE $f{=}0.10$
+& 0.350\,\cmark & 0.308\,\cmark & 0.351\,\xmark & 0.329\,\xmark & 0.261\,\xmark & 0.282\,\xmark & 0.327\,\xmark & 0.274\,\cmark & 0.296\,\xmark & 0.242\,\cmark & 0.189\,\xmark \\
+& PE $f{=}0.20$
+& 0.372\,\xmark & 0.333\,\xmark & 0.360\,\xmark & 0.326\,\xmark & 0.267\,\xmark & 0.297\,\xmark & 0.329\,\xmark & 0.279\,\cmark & 0.308\,\xmark & 0.258\,\cmark & 0.199\,\xmark \\
+& PE $f{=}0.40$
+& 0.362\,\xmark & 0.315\,\cmark & 0.363\,\xmark & 0.338\,\xmark & 0.251\,\xmark & 0.276\,\xmark & 0.333\,\xmark & 0.275\,\cmark & 0.306\,\xmark & 0.258\,\cmark & 0.187\,\xmark \\
+& PE $f{=}0.60$
+& 0.367\,\xmark & 0.312\,\cmark & 0.350\,\xmark & 0.342\,\xmark & 0.248\,\xmark & 0.283\,\xmark & 0.327\,\xmark & 0.273\,\cmark & 0.281\,\cmark & 0.252\,\cmark & 0.186\,\xmark \\
+& PE $f{=}0.80$
+& 0.358\,\cmark & 0.317\,\cmark & 0.346\,\xmark & 0.331\,\xmark & 0.250\,\xmark & 0.280\,\xmark & 0.330\,\xmark & 0.269\,\cmark & 0.283\,\xmark & 0.248\,\cmark & 0.185\,\xmark \\
+& PE $f{=}1.00$ (M1)
+& 0.364\,\xmark & 0.318\,\cmark & 0.339\,\cmark & 0.327\,\xmark & 0.249\,\xmark & 0.277\,\xmark & 0.328\,\xmark & 0.261\,\cmark & 0.280\,\cmark & 0.246\,\cmark & 0.185\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.326}\,\cmark & \textbf{0.302}\,\cmark & \textbf{0.327}\,\cmark & \textbf{0.279}\,\cmark & \textbf{0.225}\,\cmark & \textbf{0.264}\,\cmark & \textbf{0.308}\,\cmark & \textbf{0.238}\,\cmark & \textbf{0.270}\,\cmark & \textbf{0.232}\,\cmark & \textbf{0.176}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$6.5M$}
+& $\theta_A^\star$
+& 0.318 & 0.294 & 0.325 & 0.288 & 0.240 & 0.261 & 0.309 & 0.242 & 0.279 & 0.224 & 0.176 \\
+& True dir.
+& A{<}B & A{<}B & A{<}B & A{<}B & A{>}B & A{<}B & A{<}B & A{>}B & A{<}B & A{<}B & A{<}B \\
+& PE $f{=}0.05$
+& 0.250\,\cmark & 0.248\,\cmark & 0.287\,\cmark & 0.271\,\cmark & 0.155\,\xmark & 0.226\,\cmark & 0.288\,\cmark & 0.231\,\xmark & 0.234\,\cmark & 0.209\,\cmark & 0.170\,\cmark \\
+& PE $f{=}0.10$
+& 0.341\,\cmark & 0.306\,\cmark & 0.344\,\cmark & 0.318\,\xmark & 0.223\,\xmark & 0.277\,\xmark & 0.331\,\xmark & 0.269\,\cmark & 0.287\,\xmark & 0.245\,\xmark & 0.213\,\xmark \\
+& PE $f{=}0.20$
+& 0.355\,\cmark & 0.330\,\xmark & 0.347\,\xmark & 0.353\,\xmark & 0.269\,\cmark & 0.298\,\xmark & 0.358\,\xmark & 0.285\,\cmark & 0.309\,\xmark & 0.255\,\xmark & 0.215\,\xmark \\
+& PE $f{=}0.40$
+& 0.354\,\cmark & 0.311\,\cmark & 0.346\,\xmark & 0.338\,\xmark & 0.269\,\cmark & 0.279\,\xmark & 0.330\,\xmark & 0.272\,\cmark & 0.317\,\xmark & 0.249\,\xmark & 0.204\,\xmark \\
+& PE $f{=}0.60$
+& 0.344\,\cmark & 0.311\,\cmark & 0.344\,\cmark & 0.331\,\xmark & 0.269\,\cmark & 0.281\,\xmark & 0.326\,\xmark & 0.262\,\cmark & 0.299\,\xmark & 0.243\,\xmark & 0.194\,\xmark \\
+& PE $f{=}0.80$
+& 0.337\,\cmark & 0.306\,\cmark & 0.344\,\cmark & 0.324\,\xmark & 0.260\,\cmark & 0.284\,\xmark & 0.322\,\xmark & 0.264\,\cmark & 0.292\,\xmark & 0.243\,\xmark & 0.187\,\xmark \\
+& PE $f{=}1.00$ (M1)
+& 0.335\,\cmark & 0.303\,\cmark & 0.342\,\cmark & 0.330\,\xmark & 0.265\,\cmark & 0.284\,\xmark & 0.319\,\xmark & 0.258\,\cmark & 0.292\,\xmark & 0.240\,\xmark & 0.185\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.320}\,\cmark & \textbf{0.300}\,\cmark & \textbf{0.329}\,\cmark & \textbf{0.288}\,\cmark & \textbf{0.240}\,\cmark & \textbf{0.262}\,\cmark & \textbf{0.308}\,\cmark & \textbf{0.239}\,\cmark & \textbf{0.276}\,\cmark & \textbf{0.225}\,\xmark & \textbf{0.179}\,\cmark \\
+
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\FloatBarrier
+
+% --- Law, DSPy ---
+\begin{table*}[!htbp]
+\centering
+\caption{
+Unified PromptEval~\cite{polo2024efficient} vs SIREN comparison across budgets on MMLU-Pro Law with the \textbf{DSPy} tuner.
+The untuned-pipeline-default reference $\theta_B^\star$ is fixed across budgets and shown once at the top.
+For each budget, $\theta_A^\star$ is the Monte-Carlo tuned target, and all method rows report estimates
+$\hat\theta_A$ of this tuned target only. The \cmark/\xmark marker indicates whether
+$\mathrm{sign}(\hat\theta_A-\theta_B^\star)$ agrees with the true direction
+$\mathrm{sign}(\theta_A^\star-\theta_B^\star)$.
+}
+\label{tab:prompteval_law_dspy_all_budgets}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{0.92}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llccccccccccc}
+\toprule
+$B$ & Row
+& Qwen3 & Phi-3.5 & Qwen2.5-7B & Llama3.1 & Yi-1.5
+& InternLM & Qwen2-7B & Qwen2.5-3B & GLM-4 & Mistr-v0.3 & Mistr-v0.1 \\
+\midrule
+
+Ref. & $\theta_B^\star$
+& 0.340 & 0.312 & 0.334 & 0.328 & 0.219 & 0.256 & 0.302 & 0.251 & 0.257 & 0.201 & 0.169 \\
+
+\midrule
+\multirow{10}{*}{$500K$}
+& $\theta_A^\star$
+& 0.349 & 0.327 & 0.357 & 0.329 & 0.244 & 0.284 & 0.317 & 0.256 & 0.279 & 0.236 & 0.166 \\
+& True dir.
+& A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{<}B \\
+& PE $f{=}0.05$
+& 0.237\,\xmark & 0.179\,\xmark & 0.207\,\xmark & 0.168\,\xmark & 0.106\,\xmark & 0.139\,\xmark & 0.153\,\xmark & 0.153\,\xmark & 0.174\,\xmark & 0.122\,\xmark & 0.108\,\cmark \\
+& PE $f{=}0.10$
+& 0.223\,\xmark & 0.197\,\xmark & 0.269\,\xmark & 0.218\,\xmark & 0.145\,\xmark & 0.202\,\xmark & 0.211\,\xmark & 0.195\,\xmark & 0.213\,\xmark & 0.152\,\xmark & 0.114\,\cmark \\
+& PE $f{=}0.20$
+& 0.314\,\xmark & 0.259\,\xmark & 0.365\,\cmark & 0.317\,\xmark & 0.182\,\xmark & 0.261\,\cmark & 0.285\,\xmark & 0.240\,\xmark & 0.295\,\cmark & 0.215\,\cmark & 0.156\,\cmark \\
+& PE $f{=}0.40$
+& 0.376\,\cmark & 0.337\,\cmark & 0.372\,\cmark & 0.347\,\cmark & 0.252\,\cmark & 0.296\,\cmark & 0.331\,\cmark & 0.259\,\cmark & 0.293\,\cmark & 0.249\,\cmark & 0.197\,\xmark \\
+& PE $f{=}0.60$
+& 0.365\,\cmark & 0.330\,\cmark & 0.361\,\cmark & 0.342\,\cmark & 0.252\,\cmark & 0.287\,\cmark & 0.323\,\cmark & 0.268\,\cmark & 0.289\,\cmark & 0.244\,\cmark & 0.189\,\xmark \\
+& PE $f{=}0.80$
+& 0.364\,\cmark & 0.332\,\cmark & 0.362\,\cmark & 0.338\,\cmark & 0.249\,\cmark & 0.289\,\cmark & 0.321\,\cmark & 0.259\,\cmark & 0.289\,\cmark & 0.248\,\cmark & 0.176\,\xmark \\
+& PE $f{=}1.00$ (M1)
+& 0.360\,\cmark & 0.333\,\cmark & 0.361\,\cmark & 0.339\,\cmark & 0.250\,\cmark & 0.296\,\cmark & 0.323\,\cmark & 0.261\,\cmark & 0.286\,\cmark & 0.246\,\cmark & 0.177\,\xmark \\
+& \textbf{SIREN}
+& \textbf{0.346}\,\cmark & \textbf{0.331}\,\cmark & \textbf{0.356}\,\cmark & \textbf{0.325}\,\xmark & \textbf{0.247}\,\cmark & \textbf{0.284}\,\cmark & \textbf{0.314}\,\cmark & \textbf{0.247}\,\xmark & \textbf{0.273}\,\cmark & \textbf{0.231}\,\cmark & \textbf{0.166}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$1.5M$}
+& $\theta_A^\star$
+& 0.353 & 0.331 & 0.359 & 0.323 & 0.243 & 0.284 & 0.323 & 0.258 & 0.285 & 0.237 & 0.172 \\
+& True dir.
+& A{>}B & A{>}B & A{>}B & A{<}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B \\
+& PE $f{=}0.05$
+& 0.261\,\xmark & 0.196\,\xmark & 0.287\,\xmark & 0.300\,\cmark & 0.163\,\xmark & 0.163\,\xmark & 0.210\,\xmark & 0.162\,\xmark & 0.197\,\xmark & 0.181\,\xmark & 0.135\,\xmark \\
+& PE $f{=}0.10$
+& 0.277\,\xmark & 0.246\,\xmark & 0.314\,\xmark & 0.284\,\cmark & 0.200\,\xmark & 0.219\,\xmark & 0.254\,\xmark & 0.189\,\xmark & 0.243\,\xmark & 0.221\,\cmark & 0.135\,\xmark \\
+& PE $f{=}0.20$
+& 0.365\,\cmark & 0.340\,\cmark & 0.374\,\cmark & 0.343\,\xmark & 0.276\,\cmark & 0.295\,\cmark & 0.335\,\cmark & 0.279\,\cmark & 0.300\,\cmark & 0.254\,\cmark & 0.194\,\cmark \\
+& PE $f{=}0.40$
+& 0.378\,\cmark & 0.336\,\cmark & 0.369\,\cmark & 0.340\,\xmark & 0.250\,\cmark & 0.289\,\cmark & 0.330\,\cmark & 0.282\,\cmark & 0.304\,\cmark & 0.259\,\cmark & 0.191\,\cmark \\
+& PE $f{=}0.60$
+& 0.368\,\cmark & 0.339\,\cmark & 0.371\,\cmark & 0.335\,\xmark & 0.255\,\cmark & 0.294\,\cmark & 0.335\,\cmark & 0.276\,\cmark & 0.297\,\cmark & 0.246\,\cmark & 0.188\,\cmark \\
+& PE $f{=}0.80$
+& 0.376\,\cmark & 0.336\,\cmark & 0.370\,\cmark & 0.333\,\xmark & 0.250\,\cmark & 0.291\,\cmark & 0.342\,\cmark & 0.274\,\cmark & 0.295\,\cmark & 0.251\,\cmark & 0.188\,\cmark \\
+& PE $f{=}1.00$ (M1)
+& 0.374\,\cmark & 0.341\,\cmark & 0.372\,\cmark & 0.330\,\xmark & 0.248\,\cmark & 0.290\,\cmark & 0.342\,\cmark & 0.269\,\cmark & 0.294\,\cmark & 0.253\,\cmark & 0.180\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.350}\,\cmark & \textbf{0.335}\,\cmark & \textbf{0.356}\,\cmark & \textbf{0.318}\,\cmark & \textbf{0.246}\,\cmark & \textbf{0.284}\,\cmark & \textbf{0.320}\,\cmark & \textbf{0.250}\,\xmark & \textbf{0.281}\,\cmark & \textbf{0.234}\,\cmark & \textbf{0.174}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$3M$}
+& $\theta_A^\star$
+& 0.345 & 0.323 & 0.356 & 0.326 & 0.248 & 0.284 & 0.325 & 0.258 & 0.279 & 0.238 & 0.175 \\
+& True dir.
+& A{>}B & A{>}B & A{>}B & A{<}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B \\
+& PE $f{=}0.05$
+& 0.257\,\xmark & 0.192\,\xmark & 0.286\,\xmark & 0.256\,\cmark & 0.152\,\xmark & 0.167\,\xmark & 0.216\,\xmark & 0.196\,\xmark & 0.182\,\xmark & 0.159\,\xmark & 0.149\,\xmark \\
+& PE $f{=}0.10$
+& 0.284\,\xmark & 0.239\,\xmark & 0.299\,\xmark & 0.272\,\cmark & 0.208\,\xmark & 0.226\,\xmark & 0.252\,\xmark & 0.198\,\xmark & 0.219\,\xmark & 0.192\,\xmark & 0.156\,\xmark \\
+& PE $f{=}0.20$
+& 0.356\,\cmark & 0.326\,\cmark & 0.376\,\cmark & 0.343\,\xmark & 0.281\,\cmark & 0.304\,\cmark & 0.335\,\cmark & 0.270\,\cmark & 0.288\,\cmark & 0.248\,\cmark & 0.205\,\cmark \\
+& PE $f{=}0.40$
+& 0.363\,\cmark & 0.340\,\cmark & 0.377\,\cmark & 0.337\,\xmark & 0.272\,\cmark & 0.298\,\cmark & 0.337\,\cmark & 0.276\,\cmark & 0.290\,\cmark & 0.247\,\cmark & 0.198\,\cmark \\
+& PE $f{=}0.60$
+& 0.356\,\cmark & 0.334\,\cmark & 0.374\,\cmark & 0.333\,\xmark & 0.260\,\cmark & 0.295\,\cmark & 0.334\,\cmark & 0.261\,\cmark & 0.287\,\cmark & 0.256\,\cmark & 0.188\,\cmark \\
+& PE $f{=}0.80$
+& 0.356\,\cmark & 0.337\,\cmark & 0.366\,\cmark & 0.339\,\xmark & 0.264\,\cmark & 0.294\,\cmark & 0.339\,\cmark & 0.264\,\cmark & 0.286\,\cmark & 0.251\,\cmark & 0.185\,\cmark \\
+& PE $f{=}1.00$ (M1)
+& 0.358\,\cmark & 0.339\,\cmark & 0.362\,\cmark & 0.339\,\xmark & 0.258\,\cmark & 0.294\,\cmark & 0.342\,\cmark & 0.269\,\cmark & 0.290\,\cmark & 0.248\,\cmark & 0.187\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.344}\,\cmark & \textbf{0.326}\,\cmark & \textbf{0.352}\,\cmark & \textbf{0.321}\,\cmark & \textbf{0.251}\,\cmark & \textbf{0.283}\,\cmark & \textbf{0.322}\,\cmark & \textbf{0.251}\,\xmark & \textbf{0.275}\,\cmark & \textbf{0.235}\,\cmark & \textbf{0.178}\,\cmark \\
+
+\midrule
+\multirow{10}{*}{$6.5M$}
+& $\theta_A^\star$
+& 0.346 & 0.323 & 0.357 & 0.324 & 0.244 & 0.282 & 0.322 & 0.259 & 0.283 & 0.240 & 0.176 \\
+& True dir.
+& A{>}B & A{>}B & A{>}B & A{<}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B & A{>}B \\
+& PE $f{=}0.05$
+& 0.220\,\xmark & 0.206\,\xmark & 0.270\,\xmark & 0.260\,\cmark & 0.148\,\xmark & 0.166\,\xmark & 0.233\,\xmark & 0.194\,\xmark & 0.184\,\xmark & 0.184\,\xmark & 0.129\,\xmark \\
+& PE $f{=}0.10$
+& 0.268\,\xmark & 0.263\,\xmark & 0.305\,\xmark & 0.274\,\cmark & 0.185\,\xmark & 0.215\,\xmark & 0.281\,\xmark & 0.190\,\xmark & 0.223\,\xmark & 0.229\,\cmark & 0.148\,\xmark \\
+& PE $f{=}0.20$
+& 0.361\,\cmark & 0.354\,\cmark & 0.373\,\cmark & 0.342\,\xmark & 0.258\,\cmark & 0.295\,\cmark & 0.341\,\cmark & 0.277\,\cmark & 0.308\,\cmark & 0.268\,\cmark & 0.207\,\cmark \\
+& PE $f{=}0.40$
+& 0.363\,\cmark & 0.344\,\cmark & 0.380\,\cmark & 0.358\,\xmark & 0.254\,\cmark & 0.291\,\cmark & 0.351\,\cmark & 0.277\,\cmark & 0.297\,\cmark & 0.252\,\cmark & 0.202\,\cmark \\
+& PE $f{=}0.60$
+& 0.359\,\cmark & 0.337\,\cmark & 0.373\,\cmark & 0.344\,\xmark & 0.259\,\cmark & 0.291\,\cmark & 0.342\,\cmark & 0.278\,\cmark & 0.298\,\cmark & 0.252\,\cmark & 0.190\,\cmark \\
+& PE $f{=}0.80$
+& 0.360\,\cmark & 0.338\,\cmark & 0.364\,\cmark & 0.334\,\xmark & 0.260\,\cmark & 0.294\,\cmark & 0.341\,\cmark & 0.280\,\cmark & 0.292\,\cmark & 0.249\,\cmark & 0.184\,\cmark \\
+& PE $f{=}1.00$ (M1)
+& 0.358\,\cmark & 0.339\,\cmark & 0.362\,\cmark & 0.333\,\xmark & 0.251\,\cmark & 0.294\,\cmark & 0.342\,\cmark & 0.269\,\cmark & 0.291\,\cmark & 0.248\,\cmark & 0.187\,\cmark \\
+& \textbf{SIREN}
+& \textbf{0.345}\,\cmark & \textbf{0.326}\,\cmark & \textbf{0.353}\,\cmark & \textbf{0.320}\,\cmark & \textbf{0.248}\,\cmark & \textbf{0.281}\,\cmark & \textbf{0.320}\,\cmark & \textbf{0.251}\,\cmark & \textbf{0.278}\,\cmark & \textbf{0.237}\,\cmark & \textbf{0.177}\,\cmark \\
+
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\FloatBarrier

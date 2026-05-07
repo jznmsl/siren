@@ -1,0 +1,73 @@
+% =========================================================================
+% Per-budget directional accuracy summary tables (Math + Law).
+% Format matches your provided tab:law_directional.
+%
+% Convention:
+%   - 'dir' counts cells where sign(est - theta_B*) == sign(theta_A* - theta_B*).
+%   - Ties (est == theta_B* or theta_A* == theta_B*) count as wrong direction.
+%   - 'bias' is mean signed error (est - theta_A*) in pp across the cells.
+%
+% Method mapping (matches existing per-model SIREN tables):
+%   M1, M2 (M1+Wald) -> JSON m1 (point identical)
+%   M3 (single split) -> JSON m4
+%   M4 (R-split t)    -> JSON m5
+%   SIREN             -> JSON m7
+% =========================================================================
+
+% --- MMLU-Pro Math ---
+\begin{table}[h]
+\centering
+\caption{Per-budget directional accuracy on MMLU-Pro Math.}
+\label{tab:math_directional}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{1\textwidth}{!}{
+\begin{tabular}{ll|cc|cc|cc|cc|cc}
+\toprule
+& & \multicolumn{2}{c|}{M1 (Naive max)} & \multicolumn{2}{c|}{M2 (M1+Wald)} & \multicolumn{2}{c|}{M3 (single split)} & \multicolumn{2}{c|}{M4 ($R$-split $t$)} & \multicolumn{2}{c}{\textbf{SIREN}} \\
+Tuner & $B$ & dir & bias & dir & bias & dir & bias & dir & bias & dir & bias \\
+\midrule
+Random search & 500K & $9/11$ & $+3.70$ & $9/11$ & $+3.70$ & $8/11$ & $+3.99$ & $7/11$ & $+4.35$ & $\mathbf{11/11}$ & $\mathbf{-0.09}$ \\
+ & 1.5M & $9/11$ & $+0.42$ & $9/11$ & $+0.42$ & $9/11$ & $+1.41$ & $6/11$ & $+1.80$ & $\mathbf{10/11}$ & $\mathbf{+0.10}$ \\
+ & 3M & $9/11$ & $+0.71$ & $9/11$ & $+0.71$ & $9/11$ & $+0.80$ & $8/11$ & $+1.39$ & $\mathbf{10/11}$ & $\mathbf{+0.06}$ \\
+ & 6.5M & $10/11$ & $+0.66$ & $10/11$ & $+0.66$ & $9/11$ & $+0.30$ & $8/11$ & $+1.09$ & $\mathbf{11/11}$ & $\mathbf{+0.08}$ \\
+\textit{All} & \textit{(44 cells)} & \textit{$37/44$} & \textit{$+1.37$} & \textit{$37/44$} & \textit{$+1.37$} & \textit{$35/44$} & \textit{$+1.62$} & \textit{$29/44$} & \textit{$+2.16$} & $\mathbf{42/44}$ & $\mathbf{+0.04}$ \\
+\midrule
+DSPy & 500K & $9/11$ & $+1.37$ & $9/11$ & $+1.37$ & $6/11$ & $-0.76$ & $9/11$ & $+0.55$ & $\mathbf{10/11}$ & $\mathbf{-0.09}$ \\
+ & 1.5M & $8/11$ & $+1.52$ & $8/11$ & $+1.52$ & $8/11$ & $-0.54$ & $10/11$ & $+0.78$ & $\mathbf{11/11}$ & $\mathbf{-0.03}$ \\
+ & 3M & $8/11$ & $+1.49$ & $8/11$ & $+1.49$ & $9/11$ & $+0.00$ & $10/11$ & $+0.70$ & $\mathbf{11/11}$ & $\mathbf{-0.05}$ \\
+ & 6.5M & $8/11$ & $+1.33$ & $8/11$ & $+1.33$ & $8/11$ & $-0.17$ & $10/11$ & $+0.63$ & $\mathbf{11/11}$ & $\mathbf{-0.03}$ \\
+\textit{All} & \textit{(44 cells)} & \textit{$33/44$} & \textit{$+1.43$} & \textit{$33/44$} & \textit{$+1.43$} & \textit{$31/44$} & \textit{$-0.37$} & \textit{$39/44$} & \textit{$+0.67$} & $\mathbf{43/44}$ & $\mathbf{-0.05}$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+% --- MMLU-Pro Law ---
+\begin{table}[h]
+\centering
+\caption{Per-budget directional accuracy on MMLU-Pro Law.}
+\label{tab:law_directional}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{1\textwidth}{!}{
+\begin{tabular}{ll|cc|cc|cc|cc|cc}
+\toprule
+& & \multicolumn{2}{c|}{M1 (Naive max)} & \multicolumn{2}{c|}{M2 (M1+Wald)} & \multicolumn{2}{c|}{M3 (single split)} & \multicolumn{2}{c|}{M4 ($R$-split $t$)} & \multicolumn{2}{c}{\textbf{SIREN}} \\
+Tuner & $B$ & dir & bias & dir & bias & dir & bias & dir & bias & dir & bias \\
+\midrule
+Random search & 500K & $4/11$ & $+1.50$ & $4/11$ & $+1.50$ & $3/11$ & $+2.13$ & $8/11$ & $+1.00$ & $\mathbf{11/11}$ & $\mathbf{+0.05}$ \\
+ & 1.5M & $2/11$ & $+2.24$ & $2/11$ & $+2.24$ & $5/11$ & $+1.59$ & $5/11$ & $+1.37$ & $\mathbf{10/11}$ & $\mathbf{+0.11}$ \\
+ & 3M & $4/11$ & $+2.10$ & $4/11$ & $+2.10$ & $6/11$ & $+1.47$ & $6/11$ & $+1.18$ & $\mathbf{11/11}$ & $\mathbf{+0.07}$ \\
+ & 6.5M & $5/11$ & $+1.77$ & $5/11$ & $+1.77$ & $6/11$ & $+1.74$ & $8/11$ & $+1.13$ & $\mathbf{10/11}$ & $\mathbf{+0.10}$ \\
+\textit{All} & \textit{(44 cells)} & \textit{$15/44$} & \textit{$+1.90$} & \textit{$15/44$} & \textit{$+1.90$} & \textit{$20/44$} & \textit{$+1.73$} & \textit{$27/44$} & \textit{$+1.17$} & $\mathbf{42/44}$ & $\mathbf{+0.08}$ \\
+\midrule
+DSPy & 500K & $10/11$ & $+0.77$ & $10/11$ & $+0.77$ & $8/11$ & $-0.01$ & $8/11$ & $-0.15$ & $\mathbf{9/11}$ & $\mathbf{-0.21}$ \\
+ & 1.5M & $10/11$ & $+1.10$ & $10/11$ & $+1.10$ & $9/11$ & $+0.72$ & $11/11$ & $+0.25$ & $\mathbf{10/11}$ & $\mathbf{-0.17}$ \\
+ & 3M & $10/11$ & $+1.13$ & $10/11$ & $+1.13$ & $9/11$ & $+0.77$ & $11/11$ & $+0.22$ & $\mathbf{10/11}$ & $\mathbf{-0.20}$ \\
+ & 6.5M & $10/11$ & $+1.04$ & $10/11$ & $+1.04$ & $9/11$ & $+0.25$ & $10/11$ & $-0.01$ & $\mathbf{11/11}$ & $\mathbf{-0.21}$ \\
+\textit{All} & \textit{(44 cells)} & \textit{$40/44$} & \textit{$+1.01$} & \textit{$40/44$} & \textit{$+1.01$} & \textit{$35/44$} & \textit{$+0.43$} & \textit{$40/44$} & \textit{$+0.08$} & $\mathbf{40/44}$ & $\mathbf{-0.20}$ \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
