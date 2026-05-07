@@ -1,13 +1,5 @@
 # SIREN — Selection-Aware Reporting for Adaptive LLM Evaluation
 
-> **Supplementary materials for NeurIPS 2026 submission.**
-> Anonymous repository for double-blind review.
-
-This package contains everything needed to reproduce the experimental results
-reported in the paper, plus drop-in LaTeX files for the appendix tables.
-
----
-
 ## SIREN at a glance
 
 ![SIREN pipeline](figure/pipeline.png)
