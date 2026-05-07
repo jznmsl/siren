@@ -271,4 +271,15 @@ To keep the package submission-focused, the following were excluded:
 
 ## License
 
-[Anonymous during double-blind review. License will be added on acceptance.]
+This code is released under the MIT License. See [LICENSE](LICENSE) for details.
+
+If you use SIREN in your research, please cite:
+
+```bibtex
+@article{zhang2026siren,
+  title={SIREN: Selection-aware Inference for Reliable Evaluation of LLMs},
+  author={<AUTHOR_LIST>},
+  journal={arXiv preprint arXiv:<ARXIV_ID>},
+  year={2026}
+}
+```
