@@ -276,10 +276,10 @@ This code is released under the MIT License. See [LICENSE](LICENSE) for details.
 If you use SIREN in your research, please cite:
 
 ```bibtex
-@article{zhang2026siren,
-  title={SIREN: Selection-aware Inference for Reliable Evaluation of LLMs},
-  author={<AUTHOR_LIST>},
-  journal={arXiv preprint arXiv:<ARXIV_ID>},
-  year={2026}
+@article{xu2026siren,
+title={Towards Reliable LLM Evaluation: Correcting the Winner's Curse in Adaptive Benchmarking},
+author={Xu, Yang and Zhang, Jiefu and Sun, Haixiang and Zhou, Zihan and Cao, Tianyu and Aggarwal, Vaneet},
+journal={arXiv preprint arXiv:<ARXIV_ID>},
+year={2026}
 }
 ```
